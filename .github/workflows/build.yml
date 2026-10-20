@@ -5,6 +5,9 @@ on:
   pull_request:
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -21,7 +24,27 @@ jobs:
       - name: Build debug APK
         run: ./gradlew assembleDebug
 
+      - name: Verify APK
+        run: |
+          BT=$(ls -d "$ANDROID_HOME"/build-tools/* | sort -V | tail -1)
+          APK=app/build/outputs/apk/debug/app-debug.apk
+          "$BT/apksigner" verify --verbose --print-certs "$APK"
+          "$BT/aapt2" dump badging "$APK" | grep -E "package:|sdkVersion|targetSdkVersion|testOnly|native-code" || true
+          cp "$APK" kuittikamera.apk
+
       - uses: actions/upload-artifact@v4
         with:
           name: kuittikamera-apk
-          path: app/build/outputs/apk/debug/app-debug.apk
+          path: kuittikamera.apk
+
+      # Julkaisee APK:n suoraan ladattavana tiedostona (ei zip-pakattuna) puhelimen selaimelle.
+      - name: Publish APK to release
+        if: github.event_name == 'push'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: kuittikamera-latest
+          name: Kuittikamera (uusin)
+          prerelease: true
+          make_latest: false
+          target_commitish: ${{ github.sha }}
+          files: kuittikamera.apk
