@@ -153,13 +153,16 @@ class MainActivity : AppCompatActivity() {
             putExtra(Intent.EXTRA_STREAM, uri)
             clipData = ClipData.newRawUri(file.name, uri)
             addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-            // Rajaa valinnan sähköpostisovelluksiin (ei esim. WhatsAppia).
-            selector = Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:"))
         }
+        // Avataan suoraan Gmail; jos sitä ei ole, näytetään tavallinen jakovalikko.
         try {
-            startActivity(Intent.createChooser(send, getString(R.string.chooser_title)))
+            startActivity(Intent(send).setPackage(GMAIL_PACKAGE))
         } catch (e: ActivityNotFoundException) {
-            toast(R.string.error_no_email_app)
+            try {
+                startActivity(Intent.createChooser(send, getString(R.string.chooser_title)))
+            } catch (e: ActivityNotFoundException) {
+                toast(R.string.error_no_email_app)
+            }
         }
     }
 
@@ -176,6 +179,7 @@ class MainActivity : AppCompatActivity() {
         private const val KEY_EMAIL = "email"
         private const val STATE_PENDING_RAW = "pendingRaw"
         private const val STATE_RECEIPT = "receipt"
+        private const val GMAIL_PACKAGE = "com.google.android.gm"
 
         /** Pidempi sivu pikseleinä: kuitti pysyy luettavana, mutta liite on alle ~1 Mt. */
         private const val MAX_DIMENSION = 2000
