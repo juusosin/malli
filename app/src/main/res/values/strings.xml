@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">Kuittikamera</string>
+    <string name="email_hint">Vastaanottajan sähköposti</string>
+    <string name="note_hint">Lisätieto (valinnainen), esim. \"Lounas asiakkaan kanssa\"</string>
+    <string name="take_photo">Ota kuva kuitista</string>
+    <string name="retake_photo">Ota uusi kuva</string>
+    <string name="send_email">Lähetä sähköpostilla</string>
+    <string name="no_photo">Ei kuvaa vielä</string>
+    <string name="receipt_preview">Kuitin esikatselu</string>
+    <string name="email_subject">Kuitti %1$s</string>
+    <string name="email_body">Kuitti liitteenä.\n\nPäivämäärä: %1$s</string>
+    <string name="email_body_note">\nLisätieto: %1$s</string>
+    <string name="chooser_title">Lähetä kuitti</string>
+    <string name="error_invalid_email">Anna kelvollinen sähköpostiosoite</string>
+    <string name="error_no_camera">Laitteesta ei löytynyt kamerasovellusta</string>
+    <string name="error_no_email_app">Laitteesta ei löytynyt sähköpostisovellusta</string>
+    <string name="error_processing">Kuvan käsittely epäonnistui</string>
+</resources>
